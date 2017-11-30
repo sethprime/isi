@@ -1,0 +1,6 @@
+isi.configIsi:
+  path: 'admin/config/isi/setting'
+  defaults:
+    _form: '\Drupal\isi\Form\IsiConfigForm'
+  requirements:
+    _permission: 'access content'

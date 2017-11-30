@@ -1,0 +1,6 @@
+isi.default_form:
+  title: 'ISI Settings'
+  route_name: isi.default_form
+  description: 'Define the node containing the ISI.'
+  parent: system.admin_config_system
+  weight: 99

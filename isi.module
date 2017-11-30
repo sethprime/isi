@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Contains isi.module..
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function isi_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the isi module.
+    case 'help.page.isi':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Add ISI functionality') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function isi_page_attachments(array &$attachments) {
+  $url = \Drupal::service('path.current')->getPath();
+  $is_admin_path = (preg_match("/^admin/", $url)) ? TRUE : FALSE;
+  print($is_admin_path);
+  if ($is_admin_path) {
+    dpm($is_admin_path);
+    return;
+  }
+  isi_preprocess_page__add_isi($attachments);
+}
+
+/**
+ *
+ */
+function isi_preprocess_page__add_isi(&$attachments) {
+  $nid = \Drupal::config('isi.settings')->get('isi_node_nid');
+  $field_name = \Drupal::config('isi.settings')->get('isi_field_mobile');
+  if (!$nid || !$field_name) {
+    // We haven't defined any mobile ISI content.
+    return;
+  }
+  if (!$node = node_load($nid)) {
+    // We couldn't load the defined ISI node for the mobile content.
+    return;
+  }
+  // Render the markup for the configured field, and expose it to javascript.
+  $elements = field_view_field('node', $node, $field_name);
+  $elements = $node->field_isi_mobile_preview->getString();
+  $js_elements = [
+    'isi_mobile' => [
+      'content' => $elements,
+    ],
+  ];
+  $attachments['#attached']['library'][] = 'isi/isi.admin';
+  $attachments['#attached']['drupalSettings']['isi'] = $js_elements;
+  return $attachments;
+}

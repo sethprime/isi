@@ -1,0 +1,14 @@
+{
+  "name": "drupal/isi",
+  "type": "drupal-module",
+  "description": "Add ISI functionality",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/isi",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/isi",
+    "source": "http://cgit.drupalcode.org/isi"
+  },
+  "require": { }
+}
